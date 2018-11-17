@@ -48,8 +48,8 @@ To create a Wordpress theme:
 ```
 <?php
 use WP\Theme;
-require_once 'nwm_wp/wp.php';
-require_once 'nwm_wp/wp_location.php';
+require_once 'nwm_wordpress/wp.php';
+require_once 'nwm_wordpress/wp_location.php';
 
 class Tema extends WP\Theme {
     function __construct() {
@@ -119,8 +119,8 @@ To create a custom post:
 use WP\WP;
 use WC\WC;
 use WP\SimplePost;
-require_once('nwm_wp/wp.php');
-require_once('nwm_wp/wc.php');
+require_once('nwm_wordpress/wp.php');
+require_once('nwm_wordpress/wc.php');
 
 class Faculty extends SimplePost {
     public function __construct() {
