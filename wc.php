@@ -40,8 +40,15 @@ abstract class WC {
     * - multi-choice
     * - dropdown
     * @param string $instructions Instructions for the field, defaults to empty string
-    * @param array $options Special for single-choice, multi-choice and dropdown data types, it defines the different options available for user selection, default to empty array, it specs a string array
-    * @param string $hint Message that displays when you go hover the question icon, next to the field's name. It defaults to show the description
+    * @param array $options Special for single-choice, multi-choice and dropdown data types, 
+	* it defines the different options available for user selection, defaults to empty array, 
+	* it may receive:
+	* - Array of strings
+	* - Array with 'query_args' key and a definition of Wordpress query_args array, check
+	*	https://codex.wordpress.org/Template_Tags/get_posts
+	* - String with the post_type name identifier from which option values should be taken
+    * @param string $hint Message that displays when you go hover the question icon, 
+    * located next to the field's name. It defaults to show the description
     */
     function add_field($key, $name, $type, $description = '', $options = array(), $hint = '') {
         $this->extra_fields[] = (object) array(
@@ -74,15 +81,21 @@ abstract class WC {
                 }
                 case 'single-choice': {
                     $wc_field['wrapper_class'] = 'nwm-wc-single-choice';
-                    if( !array_key_exists('query_args', $field->options) ) {
+                    if( is_array($field->options) && !array_key_exists('query_args', $field->options) ) {
                         $wc_field['options'] = $field->options;
                     } else {
-                        $options = get_posts($field->options['query_args']);
+                        $options = array();
                         $temp_options = array();
+                        if (is_string($field->options)) {
+                            $options = get_posts(array('post_type' => $field->options));
+                        } elseif (!array_key_exists('query_args', $field->options)) {
+                            $options = get_posts($field->options['query_args']);
+                        }
                         foreach ($options as $opt) {
                             $temp_options[$opt->ID] = $opt->post_title;
                         }
                         wp_reset_postdata();
+                        wp_reset_query();
                         $wc_field['options'] = $temp_options;
                     }
                     woocommerce_wp_radio($wc_field);
@@ -102,7 +115,12 @@ abstract class WC {
                             woocommerce_wp_checkbox($wc_option_field);
                         }
                     } else {
-                        $options = get_posts($field->options['query_args']);
+                        $options = array();
+                        if (is_string($field->options)) {
+                            $options = get_posts(array('post_type' => $field->options));
+                        } elseif (!array_key_exists('query_args', $field->options)) {
+                            $options = get_posts($field->options['query_args']);
+                        }
                         foreach ($options as $opt) {
                             $opt_key = strtolower($opt->post_title);
                             $opt_key = str_replace($this->SEARCH, $this->REPLACE, $opt_key);
@@ -115,6 +133,7 @@ abstract class WC {
                             woocommerce_wp_checkbox($wc_option_field);
                         }
                         wp_reset_postdata();
+                        wp_reset_query();
                     }
                     break;
                 }
@@ -122,13 +141,19 @@ abstract class WC {
                     if( !array_key_exists('query_args', $field->options) ) {
                         $wc_field['options'] = $field->options;
                     } else {
-                        $options = get_posts($field->options['query_args']);
+                        $options = array();
                         $temp_options = array();
+                        if (is_string($field->options)) {
+                            $options = get_posts(array('post_type' => $field->options));
+                        } elseif (!array_key_exists('query_args', $field->options)) {
+                            $options = get_posts($field->options['query_args']);
+                        }
                         foreach ($options as $opt) {
                             $temp_options[$opt->ID] = $opt->post_title;
                         }
                         $wc_field['options'] = $temp_options;
                         wp_reset_postdata();
+                        wp_reset_query();
                     }
                     woocommerce_wp_select($wc_field);
                     break;
@@ -158,7 +183,12 @@ abstract class WC {
                         );
                     }
                 } else {
-                    $options = get_posts($field->options['query_args']);
+                    $options = array();
+                    if (is_string($field->options)) {
+                        $options = get_posts(array('post_type' => $field->options));
+                    } elseif (!array_key_exists('query_args', $field->options)) {
+                        $options = get_posts($field->options['query_args']);
+                    }
                     foreach ($options as $opt) {
                         $opt_key = strtolower($opt->post_title);
                         $opt_key = str_replace($this->SEARCH, $this->REPLACE, $opt_key);
@@ -170,6 +200,7 @@ abstract class WC {
                         );
                     }
                     wp_reset_postdata();
+                    wp_reset_query();
                 }
             } elseif( isset($field->default) ) {
                 update_post_meta(

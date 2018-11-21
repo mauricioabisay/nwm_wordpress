@@ -29,14 +29,17 @@ trait Geolocation {
                 $post->meta = get_post_meta($post->ID);
                 $locations[] = $post;
             }
-
-            echo json_encode(array(
-                'msg' => 'OK',
-                'query' => $sql,
-                'locations' => $locations,
-            ));
+            if (count($locations) > 0) {
+                header('HTTP/1.1 200 OK', true, 200);
+                echo json_encode(array(
+                    'query' => $sql,
+                    'locations' => $locations,
+                ));
+            } else {
+                header('HTTP/1.1 404 Not found', true, 404);
+            }
         } else {
-            echo json_encode(array('msg' => '404'));
+            header('HTTP/1.1 400 Bad Request', true, 400);
         }
         exit();
     }
@@ -72,14 +75,18 @@ trait Geolocation {
                 $post->meta = get_post_meta($post->ID);
                 $locations[] = $post;
             }
-
-            echo json_encode(array(
-                'msg' => 'OK',
-                'query' => $sql,
-                'locations' => $locations,
-            ));
+            if (count($locations) > 0) {
+                header('HTTP/1.1 200 OK', true, 200);
+                echo json_encode(array(
+                    'msg' => 'OK',
+                    'query' => $sql,
+                    'locations' => $locations,
+                ));
+            } else {
+                header('HTTP/1.1 404 Not found', true, 404);
+            }
         } else {
-            echo json_encode(array('msg' => '404'));
+            header('HTTP/1.1 400 Bad Request', true, 400);
         }
         exit();
     }
@@ -115,14 +122,17 @@ trait Geolocation {
                     $post->meta = get_post_meta($post->ID);
                     $locations[] = $post;
                 }
+                header('HTTP/1.1 200 OK', true, 200);
+                echo json_encode(array(
+                    'msg' => 'OK',
+                    'query' => $sql,
+                    'locations' => $locations,
+                ));
+            } else {
+                header('HTTP/1.1 404 Not found', true, 404);
             }
-            echo json_encode(array(
-                'msg' => 'OK',
-                'query' => $sql,
-                'locations' => $locations,
-            ));
         } else {
-            echo json_encode(array('msg' => '404'));
+            header('HTTP/1.1 400 Bad Request', true, 400);
         }
         exit();
     }
@@ -139,13 +149,17 @@ trait Geolocation {
                 $post->meta = get_post_meta($post->ID);
                 $locations[] = $post;
             }
-            echo json_encode(array(
-                'msg' => 'OK',
-                'query' => $sql,
-                'locations' => $locations,
-            ));
+            if (count($locations) > 0) {
+                header('HTTP/1.1 200 OK', true, 200);
+                echo json_encode(array(
+                    'query' => $sql,
+                    'locations' => $locations,
+                ));
+            } else {
+                header('HTTP/1.1 404 Not found', true, 404);
+            }
         } else {
-            echo json_encode(array('msg' => '404'));
+            header('HTTP/1.1 400 Bad Request', true, 400);
         }
         exit();
     }

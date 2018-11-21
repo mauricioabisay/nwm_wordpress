@@ -1,7 +1,7 @@
 <?php
 namespace WP;
 /**
-* Class that represents a script generic (js or css file) in Wordpress
+* Class that represents a generic script (js or css) file in Wordpress
 * @package WP
 */
 class Script {
@@ -60,7 +60,7 @@ class CSS extends Script {
 }
 
 /**
-* Theme wordpress class
+* Theme Wordpress class
 * @package WP
 */
 abstract class Theme {
@@ -97,8 +97,10 @@ abstract class Theme {
 		}
 	}
 	/**
-	* Use this function to save PUBLIC CSS and JS files via the add_css and add_js
-	*/
+	 * Use this function to save PUBLIC CSS and JS files via the add_css and add_js, 
+	 * all the files are made available to both public and admin users
+	 * @return void
+	 */
 	abstract function setScripts();
 	/**
 	* Use this function to add_actions to PUBLIC
@@ -109,8 +111,10 @@ abstract class Theme {
 	*/
 	abstract function publicFilters();
 	/**
-	* Use this function to save ADMIN CSS and JS files via the add_css and add_js methods
-	*/
+	 * Use this function to save ADMIN CSS and JS files via the add_css and add_js methods,
+	 * all the files are available to only admin users (from the Wordpress Dashboard)
+	 * @return void
+	 */
 	abstract function setAdminScripts();
 	/**
 	* Use function to add_actions that are use in the ADMIN dashboard, such as:
@@ -124,7 +128,8 @@ abstract class Theme {
 	abstract function adminFilters();
 
 	/**
-	* Loads scripts defined by overriding setScripts and setAdminScripts methods and adds them to the theme in the interface they belong (PUBLIC or ADMIN).
+	* Loads scripts defined by overriding setScripts and setAdminScripts methods 
+	* and adds them to the theme in the interface they belong (PUBLIC or ADMIN).
 	*/
 	function hookScripts() {
 		$this->setScripts();
@@ -191,7 +196,9 @@ abstract class Theme {
 	}
 
 	/**
-	* Loads the resources to the ADMIN interface, this function is called internally by the action admin_enqueue_scripts, to specifically load the resources to the ADMIN interface.
+	* Loads the resources to the ADMIN interface, 
+	* this function is called internally by the action admin_enqueue_scripts, 
+	* to specifically load the resources to the ADMIN interface.
 	*/
 	function hookAdminScripts() {
 		foreach ($this->styles_admin as $label => $css) {
@@ -570,7 +577,7 @@ abstract class SimplePost {
 	* - dropdown
 	* @param string $instructions Instructions for the field, defaults to empty string
 	* @param array $options Special for single-choice, multi-choice and dropdown data types, 
-	* it defines the different options available for user selection, default to empty array, 
+	* it defines the different options available for user selection, defaults to empty array, 
 	* it may receive:
 	* - Array of strings
 	* - Array with 'query_args' key and a definition of Wordpress query_args array, check
