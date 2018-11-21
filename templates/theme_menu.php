@@ -17,7 +17,7 @@
                 <tr class="user-description-wrap">
                     <th><label for="seo_description">Descripción:</label></th>
                     <td><textarea name="seo_description" id="seo_description" rows="5" cols="30"><?php echo get_option('seo_description', '');?></textarea>
-                    <p class="description">Trata de incluir palabras con las que quieres ser encontrado. Ej. "Somos un club campestre mexicano en la CDMX. Con instalaciones para golf, caballos, ..."</p></td>
+                    <p class="description">Trata de incluir palabras con las que quieres ser encontrado. Ej. "Soy un programador mexicano que vive en Puebla. Conozco Java, Javascript, PHP, Python, ..."</p></td>
                 </tr>
 
                 <tr class="user-description-wrap">
@@ -102,7 +102,7 @@
                     <td colspan="">
                         <div id="map-contact" class="map" style="width:100%;height:50em;"></div>
                         <script type="text/javascript">
-                            window.onload = function() {
+                            window.addEventListener('load', function(event) {
                                 var lat = <?php echo $lat;?>;
                                 var lng = <?php echo $lng;?>;
                                 //Setting up map
@@ -120,7 +120,7 @@
                                     document.getElementById('contact_lat').value = e.latlng.lat;
                                     document.getElementById('contact_lng').value = e.latlng.lng;
                                 });
-                            };
+                            }, false);
                         </script>
                     </td>
 
