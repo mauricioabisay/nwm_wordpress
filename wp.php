@@ -584,13 +584,14 @@ abstract class SimplePost {
 	*	https://codex.wordpress.org/Template_Tags/get_posts
 	* - String with the post_type name identifier from which option values should be taken
 	*/
-	function add_field($key, $name, $type, $instructions = '', $options = array()) {
+	function add_field($key, $name, $type, $instructions = '', $options = array(), $multi_as_array = false) {
 		$this->fields[] = (object) array(
 			'id' => $key,
 			'name' => $name,
 			'type' => $type,
 			'instructions' => $instructions,
-			'options' => $options
+			'options' => $options,
+			'multi_as_array' => $multi_as_array
 		);
 	}
 	 /**
@@ -621,15 +622,27 @@ abstract class SimplePost {
 	    					$opt_key = str_replace($search, $replace, $opt_key);
 	    					if ( isset($_POST[$field->id.'_'.$opt_key]) ) {
 	    						if ( get_post_meta( $post->ID, $field->id.'_'.$opt_key, FALSE ) ) {
-	    						    update_post_meta( $post->ID, $field->id.'_'.$opt_key, $_POST[$field->id.'_'.$opt_key] );
+									update_post_meta( $post->ID, $field->id.'_'.$opt_key, $_POST[$field->id.'_'.$opt_key] );
+									if ( $field->multi_as_array ) {
+										update_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
+									}
 	    						} else {
-	    						    add_post_meta( $post->ID, $field->id.'_'.$opt_key, $_POST[$field->id.'_'.$opt_key] );
+									add_post_meta( $post->ID, $field->id.'_'.$opt_key, $_POST[$field->id.'_'.$opt_key] );
+									if ( $field->multi_as_array ) {
+										add_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
+									}
 	    						}
 	    						if ( !$_POST[$field->id.'_'.$opt_key] ) {
-	    						    delete_post_meta($post->ID, $field->id.'_'.$opt_key);
+									delete_post_meta($post->ID, $field->id.'_'.$opt_key);
+									if ( $field->multi_as_array ) {
+										delete_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
+									}
 	    						}
 	    					} else {
-	    						delete_post_meta($post->ID, $field->id.'_'.$opt_key);
+								delete_post_meta($post->ID, $field->id.'_'.$opt_key);
+								if ( $field->multi_as_array ) {
+									delete_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
+								}
 	    					}
 						}
 					} else {
@@ -646,15 +659,27 @@ abstract class SimplePost {
 	    						$opt_key = str_replace($search, $replace, $opt_key);
 		    					if ( isset($_POST[$field->id.'_'.$opt_key]) ) {
 		    						if ( get_post_meta( $post->ID, $field->id.'_'.$opt_key, FALSE ) ) {
-		    						    update_post_meta( $post->ID, $field->id.'_'.$opt_key, $_POST[$field->id.'_'.$opt_key] );
+										update_post_meta( $post->ID, $field->id.'_'.$opt_key, $_POST[$field->id.'_'.$opt_key] );
+										if ( $field->multi_as_array ) {
+											update_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
+										}
 		    						} else {
-		    						    add_post_meta( $post->ID, $field->id.'_'.$opt_key, $_POST[$field->id.'_'.$opt_key] );
+										add_post_meta( $post->ID, $field->id.'_'.$opt_key, $_POST[$field->id.'_'.$opt_key] );
+										if ( $field->multi_as_array ) {
+											add_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
+										}
 		    						}
 		    						if ( !$_POST[$field->id.'_'.$opt_key] ) {
-		    						    delete_post_meta($post->ID, $field->id.'_'.$opt_key);
+										delete_post_meta($post->ID, $field->id.'_'.$opt_key);
+										if ( $field->multi_as_array ) {
+											delete_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
+										}
 		    						}
 		    					} else {
-		    						delete_post_meta($post->ID, $field->id.'_'.$opt_key);
+									delete_post_meta($post->ID, $field->id.'_'.$opt_key);
+									if ( $field->multi_as_array ) {
+										delete_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
+									}
 		    					}
 							}
 						}
