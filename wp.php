@@ -722,20 +722,18 @@ abstract class SimplePost {
 	*/
 	function meta_box_gen($post, $callback_args) {
 		$field = $callback_args['args']['field'];
-		if( isset($field->options) && $field->options instanceof Countable ) {
-			$search = array(
-				' ',
-				'á', 'é', 'í', 'ó', 'ú',
-				'ä', 'ë', 'ï', 'ö', 'ü',
-				'ñ'
-			);
-			$replace = array(
-				'_',
-				'a', 'e', 'i', 'o', 'u',
-				'a', 'e', 'i', 'o', 'u',
-				'n'
-			);
-		}
+		$search = array(
+			' ',
+			'á', 'é', 'í', 'ó', 'ú',
+			'ä', 'ë', 'ï', 'ö', 'ü',
+			'ñ'
+		);
+		$replace = array(
+			'_',
+			'a', 'e', 'i', 'o', 'u',
+			'a', 'e', 'i', 'o', 'u',
+			'n'
+		);
 
 		switch ($field->type) {
 			case 'text':{
