@@ -615,7 +615,7 @@ abstract class SimplePost {
 	    				'a', 'e', 'i', 'o', 'u',
 	    				'a', 'e', 'i', 'o', 'u',
 	    				'n'
-	    			);
+					);
 	    			if( is_array($field->options) && !array_key_exists('query_args', $field->options) ) {
 						foreach ($field->options as $opt) {
 							$opt_key = strtolower($opt);
@@ -624,6 +624,7 @@ abstract class SimplePost {
 	    						if ( get_post_meta( $post->ID, $field->id.'_'.$opt_key, FALSE ) ) {
 									update_post_meta( $post->ID, $field->id.'_'.$opt_key, $_POST[$field->id.'_'.$opt_key] );
 									if ( $field->multi_as_array ) {
+										delete_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
 										update_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
 									}
 	    						} else {
@@ -635,13 +636,13 @@ abstract class SimplePost {
 	    						if ( !$_POST[$field->id.'_'.$opt_key] ) {
 									delete_post_meta($post->ID, $field->id.'_'.$opt_key);
 									if ( $field->multi_as_array ) {
-										delete_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
+										delete_post_meta( $post->ID, $field->id, $opt->ID );
 									}
 	    						}
 	    					} else {
 								delete_post_meta($post->ID, $field->id.'_'.$opt_key);
 								if ( $field->multi_as_array ) {
-									delete_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
+									delete_post_meta( $post->ID, $field->id, $opt->ID );
 								}
 	    					}
 						}
@@ -661,6 +662,7 @@ abstract class SimplePost {
 		    						if ( get_post_meta( $post->ID, $field->id.'_'.$opt_key, FALSE ) ) {
 										update_post_meta( $post->ID, $field->id.'_'.$opt_key, $_POST[$field->id.'_'.$opt_key] );
 										if ( $field->multi_as_array ) {
+											delete_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
 											update_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
 										}
 		    						} else {
@@ -672,13 +674,13 @@ abstract class SimplePost {
 		    						if ( !$_POST[$field->id.'_'.$opt_key] ) {
 										delete_post_meta($post->ID, $field->id.'_'.$opt_key);
 										if ( $field->multi_as_array ) {
-											delete_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
+											delete_post_meta( $post->ID, $field->id, $opt->ID );
 										}
 		    						}
 		    					} else {
 									delete_post_meta($post->ID, $field->id.'_'.$opt_key);
 									if ( $field->multi_as_array ) {
-										delete_post_meta( $post->ID, $field->id, $_POST[$field->id.'_'.$opt_key] );
+										delete_post_meta( $post->ID, $field->id, $opt->ID );
 									}
 		    					}
 							}
