@@ -914,8 +914,14 @@ abstract class SimplePost {
 				break;
 			}
 
+			case 'image': {
+				include 'templates/image.php';
+				break;
+			}
+
 			case 'map': {
 				include 'templates/map_marker.php';
+				break;
 			}
 		}
 	}
